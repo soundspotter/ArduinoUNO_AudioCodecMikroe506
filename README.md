@@ -17,31 +17,30 @@ Instructions for Arduino UNO
 The following wiring implements both the I2C and SPI (Arduino SPI in Master Mode)
 serial communication interfaces between the Arduino and the Mikroe506. 
 
-ArduinoUNO    Mikroe506 Audio Proto
-
+ArduinoUNO <->   Mikroe506 Audio Proto
 ----------    ---------------------
 
-D05           Timer input 1 from Modded WM8731 pin 2 via 220 Ohm resistor (see .jpg file and NOTE 1)
+D05    <-       Timer input 1 from Modded WM8731 pin 2 via 220 Ohm resistor (see .jpg file and NOTE 1)
 
-D10           ADCL + DACL output (parallel) via 220 Ohm resistor in series
+D10    ->       ADCL + DACL output (parallel) via 220 Ohm resistor in series
 
-D11           MOSI (master out, slave in)
+D11    ->       MOSI (master out, slave in)
 
-D12           MISO (master in, slave out)
+D12    ->       MISO (master in, slave out)
 
-D13           SCK  (SPI clock)
+D13    ->       SCK  (SPI clock)
 
-(A0)          Optional potentiometer input - uncomment A0/A1 code to enable potentiometer inputs
+(A0)   <-       Optional potentiometer input - uncomment A0/A1 code to enable potentiometer inputs
 
-(A1)          Optional potentiometer input
+(A1)   <-       Optional potentiometer input
 
-A4            SDA (I2C serial data)            
+A4     ->       SDA (I2C serial data)            
 
-A5            SCL (I2C clock)
+A5     ->       SCL (I2C clock)
 
-3.3V          3.3V
+3.3V   ->       3.3V
 
-GND           GND
+GND    ->       GND
 
 
 NOTES
