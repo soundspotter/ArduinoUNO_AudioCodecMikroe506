@@ -4,8 +4,7 @@ ArduinoUNO_AudioCodecMikroe506 48kHz 16-bit Stereo PCM I/O for Arduino
 Sep. 15th 2013
 
 This is a library to drive the Mikroe 506 WM8731 Audio Codec Proto Board with ArduinoUNO.
-It is a modified version of OpenMusicLabs AudioCodec library for use with the Mikroe 506 board.
-This library requires a small hardware midification of the Mikroe506 Proto Board, see instructions below.
+It is a modified version of OpenMusicLabs AudioCodec library for use with the Mikroe 506 board in place of the OpenMusicLabs AudioCodec board. This library requires a small hardware midification of the Mikroe506 Proto Board, see instructions below.
 
 Requirements
 ------------
