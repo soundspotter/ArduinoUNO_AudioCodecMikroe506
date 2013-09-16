@@ -18,24 +18,41 @@ The following wiring implements both the I2C and SPI (Arduino SPI in Master Mode
 serial communication interfaces between the Arduino and the Mikroe506. 
 
 ArduinoUNO    Mikroe506 Audio Proto
+
 ----------    ---------------------
-D05           Timer input 1 from Modded WM8731 pin 2 via 220 Ohn resistor (see .jpg file and NOTE 1)
+
+D05           Timer input 1 from Modded WM8731 pin 2 via 220 Ohm resistor (see .jpg file and NOTE 1)
+
 D10           ADCL + DACL output (parallel) via 220 Ohm resistor in series
+
 D11           MOSI (master out, slave in)
+
 D12           MISO (master in, slave out)
+
 D13           SCK  (SPI clock)
+
 (A0)          Optional potentiometer input - uncomment A0/A1 code to enable potentiometer inputs
+
 (A1)          Optional potentiometer input
+
 A4            SDA (I2C serial data)            
+
 A5            SCL (I2C clock)
+
 3.3V          3.3V
+
 GND           GND
 
+
 NOTES
+
 -----
+
 1. Connect CLKOUT (pin 2) from the WM831 chip to Timer T1 in (pin 5) on the Arduino UNO. 
 Reason: the Mikroe 506 12.288MHz crystal output is needed to drive the DAC/ADC at the correct rate.
 Consult the wiring diagram: ArduinoUno_Mikroe506AudioProto_labels.jpg
+
+2. Place the AudioCodec library in your arduino sketches/libraries folder. Run the examples/sine_generator to hear a 48kHz stereo test tone through the headphones.
 
 -mkc 9/15/13
 
