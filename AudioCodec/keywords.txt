@@ -1,0 +1,54 @@
+#######################################
+# Syntax Coloring Map For CodecArduino
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+AudioCodec	KEYWORD1
+AudioCodec_maple	KEYWORD1
+AudioCodec_interrupt	KEYWORD3
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+AudioCodec_init	KEYWORD2
+AudioCodec_data	KEYWORD2
+AudioCodec_ADC	KEYWORD2
+MultiU16X8toH16	KEYWORD2
+MultiSU16X8toL16	KEYWORD2
+MultiSU16XConst8toL16	KEYWORD2
+MultiSU16XConst8toH16	KEYWORD2
+MultiSU16X8toH16	KEYWORD2
+MultiSU16X8toH16Round	KEYWORD2
+MultiU16X16toH16	KEYWORD2
+MultiU16X16to32	KEYWORD2
+MultiU16X16toH16Round	KEYWORD2
+MultiS16X16to32		KEYWORD2
+MultiS16X16toH16	KEYWORD2
+MultiSU16X16to32	KEYWORD2
+MultiSU16X16toH16	KEYWORD2
+MultiSU16X16toH16Round	KEYWORD2
+MultiSU32X16toH32Round	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+SAMPLE_RATE	LITERAL1
+ADCS	LITERAL1
+ADCHPD	LITERAL1
+HYST	LITERAL1
+LINVOL	LITERAL1
+RINVOL	LITERAL1
+LHPVOL	LITERAL1
+RHPVOL	LITERAL1
+MICBOOST	LITERAL1
+MUTEMIC	LITERAL1
+INSEL	LITERAL1
+BYPASS	LITERAL1
+DACSEL	LITERAL1
+SIDETONE	LITERAL1
+SIDEATT	LITERAL1
