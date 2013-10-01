@@ -194,7 +194,7 @@ static inline void AudioCodec_init(void) {
   Wire.endTransmission();
   
   Wire.beginTransmission(0x1a);
-  Wire.write(0x10); // WM8731 CORE CLOCK config for ATMega328p internal clock w/ SPI_CLKDIV1 (16MHz)
+  Wire.write(0x10); // WM8731 CORE CLOCK config
   #if SAMPLE_RATE == 88
     USBNORMAL=0;BOSR=1;SR0=1;SR1=1;SR2=1;SR3=1;CLKDIV=0;CLKODIV=0;
   #elif SAMPLE_RATE == 48
