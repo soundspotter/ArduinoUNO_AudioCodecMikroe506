@@ -11,10 +11,10 @@ across the span of 44Hz to 10kHz.
 // setup codec parameters
 // must be done before #includes
 // see readme file in libraries folder for explanations
-#define SAMPLE_RATE 8 // 8kHz (Arduino@16MHz/2) ) mkc 9/15/13
+#define SAMPLE_RATE 8 // 8kHz (WM8731@12.288MHz, Arduino@16MHz) ) mkc 9/15/13
 #define ADCS 0 // use no ADCs (potentiometers)
 #define INSEL 1 // enable MIC input
-#define MICBOOST 1 // enable MICBOOST
+#define MICBOOST 0 // enable MICBOOST
 
 // include necessary libraries
 #include <Wire.h>
@@ -30,7 +30,7 @@ int right_out = 0;
 
 // create variables for ADC results
 // it only has positive values -> unsigned
-unsigned int mod0_value = 1024;
+unsigned int mod0_value = 8192;
 unsigned int mod1_value = 14418; // 56.32 * base 8kHz/1024 = 440Hz
 
 // create sinewave lookup table
@@ -64,8 +64,8 @@ ISR(TIMER1_COMPA_vect, ISR_NAKED) { // dont store any registers
   // create some temporary variables
   // these tend to work faster than using the main data variables
   // as they arent fetched and stored all the time
-  int temp1;
-  //  int temp2;
+  int temp1;  
+  int temp2;
   
   // create a variable frequency and amplitude sinewave
   // fetch a sample from the lookup table
@@ -85,11 +85,11 @@ ISR(TIMER1_COMPA_vect, ISR_NAKED) { // dont store any registers
   
   // set amplitude with mod0
   // multiply our sinewave by the mod0 value
-  //MultiSU16X16toH16(temp2, left_in, mod0_value);
-  //temp2 = (temp1 >> 4);
+  MultiSU16X16toH16(temp2, temp1, mod0_value);
+  
   // our sinewave is now in temp2
-  left_out = left_in; // put incoming audio on left channel
-  right_out = temp1; // put sinusoid out on right channel
+  left_out = left_in>>4; // put incoming audio on left channel
+  right_out = temp2; // put sinusoid out on right channel
 
   // get ADC values
   // & is required before adc variables

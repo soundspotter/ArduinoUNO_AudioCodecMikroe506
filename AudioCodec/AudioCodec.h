@@ -127,6 +127,16 @@
   #error SIDEATT value not defined
 #endif
 
+// CORE CLOCK Variables
+uint8_t USBNORMAL=0;
+uint8_t BOSR=0;
+uint8_t SR0=0;
+uint8_t SR1=0;
+uint8_t SR2=0;
+uint8_t SR3=0;
+uint8_t CLKDIV2=0;
+uint8_t CLKODIV2=0;
+
 // setup variables for ADC
 #if ADCS == 0
   // do nothing
@@ -196,19 +206,19 @@ static inline void AudioCodec_init(void) {
   Wire.beginTransmission(0x1a);
   Wire.write(0x10); // WM8731 CORE CLOCK config
   #if SAMPLE_RATE == 88
-    USBNORMAL=0;BOSR=1;SR0=1;SR1=1;SR2=1;SR3=1;CLKDIV=0;CLKODIV=0;
+    USBNORMAL=0;BOSR=1;SR0=1;SR1=1;SR2=1;SR3=1;CLKDIV2=0;CLKODIV2=0;
   #elif SAMPLE_RATE == 48
-    USBNORMAL=0;BOSR=0;SR0=0;SR1=0;SR2=0;SR3=0;CLKDIV=0;CLKODIV=0;
+    USBNORMAL=0;BOSR=0;SR0=0;SR1=0;SR2=0;SR3=0;CLKDIV2=0;CLKODIV2=0;
   #elif SAMPLE_RATE == 44
-    USBNORMAL=0;BOSR=0;SR0=1;SR1=0;SR2=1;SR3=1;CLKDIV=0;CLKODIV=0;
+    USBNORMAL=0;BOSR=0;SR0=1;SR1=0;SR2=1;SR3=1;CLKDIV2=0;CLKODIV2=0;
   #elif SAMPLE_RATE == 22
-    USBNORMAL=0;BOSR=0;SR0=1;SR1=0;SR2=1;SR3=1;CLKDIV=0;CLKODIV=0;
+    USBNORMAL=0;BOSR=0;SR0=1;SR1=0;SR2=1;SR3=1;CLKDIV2=0;CLKODIV2=0;
   #elif SAMPLE_RATE == 8
-    USBNORMAL=0;BOSR=0;SR0=1;SR1=1;SR2=0;SR3=0;CLKDIV=0;CLKODIV=0;
+    USBNORMAL=0;BOSR=0;SR0=1;SR1=1;SR2=0;SR3=0;CLKDIV2=0;CLKODIV2=0;
   #elif SAMPLE_RATE == 2
-    USBNORMAL=0;BOSR=1;SR0=1;SR1=1;SR2=0;SR3=0;CLKDIV=0;CLKODIV=0;
+    USBNORMAL=0;BOSR=1;SR0=1;SR1=1;SR2=0;SR3=0;CLKDIV2=0;CLKODIV2=0;
   #endif
-  Wire.write((uint8_t)((CLKODIV2<<7)|(CLKODIV<<6)|(SR3<<5)|(SR2<<4)|(SR1<<3)|(SR0<<2)|(BOSR<<1)|(USBNORMAL<<0)));
+  Wire.write((uint8_t)((CLKODIV2<<7)|(CLKDIV2<<6)|(SR3<<5)|(SR2<<4)|(SR1<<3)|(SR0<<2)|(BOSR<<1)|(USBNORMAL<<0)));
   Wire.endTransmission();
 
   Wire.beginTransmission(0x1a);

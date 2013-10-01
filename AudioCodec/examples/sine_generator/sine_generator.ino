@@ -27,8 +27,8 @@ int right_out = 0;
 
 // create variables for ADC results
 // it only has positive values -> unsigned
-unsigned int mod0_value = 8192;
-unsigned int mod1_value = 2560; // 10* base 48kHz/1024 = 46.875Hz = 468.75Hz
+unsigned int mod0_value = 8192; // Pot value multiplier for vol
+unsigned int mod1_value = 2403; // Pot value multiplier for 440Hz
 
 // create sinewave lookup table
 // PROGMEM stores the values in the program memory
