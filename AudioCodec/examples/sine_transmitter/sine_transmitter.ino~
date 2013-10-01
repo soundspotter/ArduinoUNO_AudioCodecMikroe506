@@ -11,10 +11,8 @@ across the span of 44Hz to 10kHz.
 // setup codec parameters
 // must be done before #includes
 // see readme file in libraries folder for explanations
-#define SAMPLE_RATE 8 // 8kHz (Arduino@16MHz/2) ) mkc 9/15/13
-#define ADCS 0 // use no ADCs (potentiometers)
-#define INSEL 1 // enable MIC input
-#define MICBOOST 1 // enable MICBOOST
+#define SAMPLE_RATE 48 // 48kHz (Mikroe506 12.288MHz / 256) mkc 9/15/13
+#define ADCS 0 // use both ADCs
 
 // include necessary libraries
 #include <Wire.h>
@@ -30,8 +28,8 @@ int right_out = 0;
 
 // create variables for ADC results
 // it only has positive values -> unsigned
-unsigned int mod0_value = 1024;
-unsigned int mod1_value = 14418; // 56.32 * base 8kHz/1024 = 440Hz
+unsigned int mod0_value = 8192;
+unsigned int mod1_value = 2560; // 10* base 48kHz/1024 = 46.875Hz = 468.75Hz
 
 // create sinewave lookup table
 // PROGMEM stores the values in the program memory
@@ -49,7 +47,7 @@ unsigned int location; // lookup table value location
 void setup() {
   // call this last if you are setting up other things
   AudioCodec_init(); // setup codec and microcontroller registers
-  Serial.begin(115200);
+  //  Serial.begin(115200);
 }
 
 void loop() {
@@ -60,12 +58,14 @@ void loop() {
 ISR(TIMER1_COMPA_vect, ISR_NAKED) { // dont store any registers
   // &'s are necessary on data_in variables
   AudioCodec_data(&left_in, &right_in, left_out, right_out);
-  Serial.write((char)(left_out>>8)); // Write high 8 bits as char
+  /*  if(Serial.available()){
+    Serial.print((char)(left_in>>8)); // Write high 8 bits as char
+    }*/
   // create some temporary variables
   // these tend to work faster than using the main data variables
   // as they arent fetched and stored all the time
   int temp1;
-  //  int temp2;
+  int temp2;
   
   // create a variable frequency and amplitude sinewave
   // fetch a sample from the lookup table
@@ -85,11 +85,11 @@ ISR(TIMER1_COMPA_vect, ISR_NAKED) { // dont store any registers
   
   // set amplitude with mod0
   // multiply our sinewave by the mod0 value
-  //MultiSU16X16toH16(temp2, left_in, mod0_value);
+  MultiSU16X16toH16(temp2, temp1, mod0_value);
   //temp2 = (temp1 >> 4);
   // our sinewave is now in temp2
-  left_out = left_in; // put incoming audio on left channel
-  right_out = temp1; // put sinusoid out on right channel
+  left_out = temp2; // put sinusoid out on left channel
+  right_out = -temp2; // put inverted version out on right chanel
 
   // get ADC values
   // & is required before adc variables
