@@ -78,6 +78,7 @@
   #error RHPVOL value not defined
 #endif
 
+// Microphone control
 #ifndef MICBOOST
   #define MICBOOST 0
 #elif (MICBOOST == 0)||(MICBOOST == 1)
@@ -86,7 +87,7 @@
 #endif
 
 #ifndef MUTEMIC
-  #define MUTEMIC 1
+  #define MUTEMIC 0
 #elif (MUTEMIC == 0)||(MUTEMIC == 1)
 #else
   #error MUTEMIC value not defined
@@ -100,7 +101,7 @@
 #endif
 
 #ifndef BYPASS
-  #define BYPASS 0
+  #define BYPASS 1
 #elif (BYPASS == 0)||(BYPASS == 1)
 #else
   #error BYPASS value not defined
@@ -246,7 +247,7 @@ static inline void AudioCodec_init(void) {
   TCCR1B = 0x0a; // set to CTC and Timer1 prescaler DIV8, 0xa (internal clock 16MHz/8
   TCCR1C = 0x00; // not used
   TCNT1H = 0x00; // clear the counter
-  TCNT1H = 0x00;
+  TCNT1L = 0x00;
   #if SAMPLE_RATE == 88
     OCR1AH = 0x00; // set the counter top for 16MHz internal clock
     OCR1AL = 0x17;
@@ -263,8 +264,8 @@ static inline void AudioCodec_init(void) {
     OCR1AH = 0x03; // set the counter top
     OCR1AL = 0xe8;
   #endif
-    //  TIMSK1 = 0x02; // turn on compare match interrupt // ** SHOULD THIS BE 0x4, MKC 9/15/13 ??
-  TIMSK1 |= (1 << OCIE1A); // turn on compare match interrupt // ** SHOULD THIS BE 0x4, MKC 9/15/13 ??
+    //  TIMSK1 = 0x02; // turn on compare match interrupt
+  TIMSK1 |= (1 << OCIE1A); // turn on compare match interrupt
   
   // turn off all enabled interrupts (delay and wire)
   TIMSK0 = 0x00;

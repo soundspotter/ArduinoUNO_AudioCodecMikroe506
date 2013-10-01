@@ -14,6 +14,15 @@ across the span of 44Hz to 10kHz.
 #define SAMPLE_RATE 8 // 8kHz (WM8731@12.288MHz, Arduino@16MHz) ) mkc 9/15/13
 #define ADCS 0 // use no ADCs (potentiometers)
 
+// WM8731 Microphone control
+#define MUTEMIC 0 // disable MUTEMIC
+#define INSEL 1 // enable MIC input
+#define MICBOOST 1 // enable MICBOOST
+#define BYPASS 1 // Bypass LINEIN
+#define DACSEL 1 // Select DAC for audio loopback
+#define SIDETONE 0 // Deselect SIDETONE
+#define SIDEATT 0
+
 // include necessary libraries
 #include <Wire.h>
 #include <SPI.h>
@@ -47,7 +56,7 @@ unsigned int location; // lookup table value location
 void setup() {
   // call this last if you are setting up other things
   AudioCodec_init(); // setup codec and microcontroller registers
-  Serial.begin(115200); // Begin serial communications for radio tansmitter
+  Serial.begin(115200);
 }
 
 void loop() {
@@ -62,20 +71,20 @@ ISR(TIMER1_COMPA_vect, ISR_NAKED) { // dont store any registers
   // create some temporary variables
   // these tend to work faster than using the main data variables
   // as they arent fetched and stored all the time
-  int temp1;  
-  int temp2;
+  //int temp1;  
+  //int temp2;
   
   // create a variable frequency and amplitude sinewave
   // fetch a sample from the lookup table
-  temp1 = pgm_read_word_near(sinewave + location);
+  //temp1 = pgm_read_word_near(sinewave + location);
   //temp1 = (int)random(-512,512);
   // step through table at rate determined by mod1
   // use upper byte of mod1 value to set the rate
   // and have an offset of 1 so there is always an increment.
-  location += 1 + (mod1_value >> 8);
+  //location += 1 + (mod1_value >> 8);
   // if weve gone over the table boundary -> loop back
   // around to the other side.
-  location &= 0x03ff; // fast way of doing rollover for 2^n numbers
+  //location &= 0x03ff; // fast way of doing rollover for 2^n numbers
   // otherwise it would look like this:
   // if (location >= 1024) {
   // location -= 1024;
@@ -83,11 +92,11 @@ ISR(TIMER1_COMPA_vect, ISR_NAKED) { // dont store any registers
   
   // set amplitude with mod0
   // multiply our sinewave by the mod0 value
-  MultiSU16X16toH16(temp2, temp1, mod0_value);
+  //MultiSU16X16toH16(temp2, temp1, mod0_value);
   
   // our sinewave is now in temp2
-  left_out = temp2; // put sinusoid on left channel
-  right_out = -temp2; // put inverted sinusoid out on right channel
+  left_out = right_in; // put incoming audio on left channel
+  right_out = right_in; // put sinusoid out on right channel
 
   // get ADC values
   // & is required before adc variables
