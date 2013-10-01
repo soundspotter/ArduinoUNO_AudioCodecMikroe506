@@ -183,6 +183,11 @@ static inline void AudioCodec_init(void) {
   Wire.write(0x06); // right headphone out register
   Wire.write((uint8_t)RHPVOL);
   Wire.endTransmission();
+
+  Wire.beginTransmission(0x1a);
+  Wire.write(0x08); // microphone select
+  Wire.write((uint8_t) 0x06); // INSEL = MIC to ADC, MIC BOOST
+  Wire.endTransmission();
   
   Wire.beginTransmission(0x1a);
   Wire.write(0x0a); // digital audio path configuration
@@ -205,10 +210,15 @@ static inline void AudioCodec_init(void) {
   #elif SAMPLE_RATE == 22
     Wire.write(0xe0);
   #elif SAMPLE_RATE == 8
-    Wire.write(0xac);
+    Wire.write(0x6e);   // 0xac); - changed for 16MHz/2/2 clock (Arduino/2 -> Mikroe/2)
   #elif SAMPLE_RATE == 2
     Wire.write(0xce);
   #endif
+  Wire.endTransmission();
+
+  Wire.beginTransmission(0x1a);
+  Wire.write(0xc); // LININ, CLKOUT power down
+  Wire.write(0x41);
   Wire.endTransmission();
 
   Wire.beginTransmission(0x1a);
@@ -228,7 +238,7 @@ static inline void AudioCodec_init(void) {
   
   // setup timer1 for codec clock division
   TCCR1A = 0x00; // set to CTC mode
-  TCCR1B = 0x0f; // set to CTC mode, 0xf = external clock on pin T1 [0xa (internal clock 16MHz / 8) mkc 9/15/13]
+  TCCR1B = 0x0a; // set to CTC mode, 0xf = external clock on pin T1 [0xa (internal clock 16MHz / 2) mkc 9/15/13]
   TCCR1C = 0x00; // not used
   TCNT1H = 0x00; // clear the counter
   TCNT1H = 0x00;
@@ -237,13 +247,13 @@ static inline void AudioCodec_init(void) {
     OCR1AL = 0x3f;
   #elif (SAMPLE_RATE == 48) 
     OCR1AH = 0x00; // set the counter top
-    OCR1AL = 0x7f;    // ( 12.822MHz / 2 ) / 48kHz = 128 (127+interrupt)
+    OCR1AL = 0x7f;    // ( 12.288MHz / 2 ) / 48kHz = 128 (127+interrupt)
   #elif (SAMPLE_RATE == 44) || (SAMPLE_RATE == 22)
     OCR1AH = 0x00; // set the counter top
     OCR1AL = 0x7f; // OpenMusicLabs : MCLK 11.2896MHz / 256 
   #elif SAMPLE_RATE == 8
-    OCR1AH = 0x02; // set the counter top
-    OCR1AL = 0xbf;
+    OCR1AH = 0x03; //0x02; // set the counter top
+    OCR1AL = 0xe8; //0xbf;
   #elif SAMPLE_RATE == 2
     OCR1AH = 0x04; // set the counter top
     OCR1AL = 0x7f;
