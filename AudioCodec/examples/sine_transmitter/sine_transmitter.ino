@@ -42,7 +42,7 @@ const int16_t PROGMEM sinewave[] = { // changed from line above by MKC 9/14/13
 #include <sinetable.inc>
 };
 
-unsigned int location; // lookup table value location
+unsigned int location = 0; // lookup table value location
 
 void setup() {
   // call this last if you are setting up other things

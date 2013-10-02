@@ -171,7 +171,7 @@ static inline void AudioCodec_init(void) {
   
   Wire.beginTransmission(0x1a);
   Wire.write(0x0e); // digital data format
-  Wire.write(0x03); // 16b SPI mode
+  Wire.write(0x03); // 16-bit DSP Mode B
   Wire.endTransmission();
   
   Wire.beginTransmission(0x1a);
