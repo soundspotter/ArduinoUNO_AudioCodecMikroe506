@@ -14,6 +14,15 @@ across the span of 44Hz to 10kHz.
 #define SAMPLE_RATE 8 // 8kHz (WM8731@12.288MHz, Arduino@16MHz) ) mkc 9/15/13
 #define ADCS 0 // use no ADCs (potentiometers)
 
+// WM8731 Microphone control
+#define MUTEMIC 1 // disable MIC input
+#define INSEL 0 // disable MIC input
+#define MICBOOST 0 // enable MICBOOST
+#define BYPASS 1 // Bypass LINEIN
+#define DACSEL 1 // Select DAC for audio loopback
+#define SIDETONE 0 // Deselect SIDETONE
+#define SIDEATT 0
+
 // include necessary libraries
 #include <Wire.h>
 #include <SPI.h>
