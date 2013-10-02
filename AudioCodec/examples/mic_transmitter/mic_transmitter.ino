@@ -47,7 +47,7 @@ void loop() {
 ISR(TIMER1_COMPA_vect, ISR_NAKED) { // dont store any registers
   // &'s are necessary on data_in variables
   AudioCodec_data(&left_in, &right_in, left_out, right_out);
-  Serial.write((char)left_out>>8); // Write high 8 bits as char
+  Serial.write((char)(left_out>>8)); // Write high 8 bits as char
   
   // our sinewave is now in temp2
   left_out = right_in; // put incoming audio on left channel
