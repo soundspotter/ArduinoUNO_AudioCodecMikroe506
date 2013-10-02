@@ -1,11 +1,9 @@
 /*
-sine_transmitter.ino
+mic_transmitter.ino
 mcasey - Bregman Studio, Dartmouth College, 9.30.13
-guest openmusiclabs 7.7.11
-this program creates a sinewave of variable frequency and
-amplitude, presented at both left and right outputs. there
-isnt any interpolation, so you only get 256 discrete frequencies
-across the span of 44Hz to 10kHz.
+
+This program reads audio data from the Mikroe506 board's microphone input.
+It relays the input back to the DACs for listening and to the UART TX for transmission.
 */
 
 // setup codec parameters
@@ -35,24 +33,6 @@ int right_in = 0;
 int left_out = 0; // out to codec (HP_OUT)
 int right_out = 0;
 
-// create variables for ADC results
-// it only has positive values -> unsigned
-unsigned int mod0_value = 8192;
-unsigned int mod1_value = 14418; // 440Hz
-
-// create sinewave lookup table
-// PROGMEM stores the values in the program memory
-// it is automatically included with AudioCodec.h
-//PROGMEM prog_int16_t sinewave[]  = {
-const int16_t PROGMEM sinewave[] = { // changed from line above by MKC 9/14/13
-  // this file is stored in AudioCodec.h and is a 1024 value
-  // sinewave lookup table of signed 16bit integers
-  // you can replace it with your own waveform if you like
-#include <sinetable.inc>
-};
-
-unsigned int location; // lookup table value location
-
 void setup() {
   // call this last if you are setting up other things
   AudioCodec_init(); // setup codec and microcontroller registers
@@ -67,39 +47,11 @@ void loop() {
 ISR(TIMER1_COMPA_vect, ISR_NAKED) { // dont store any registers
   // &'s are necessary on data_in variables
   AudioCodec_data(&left_in, &right_in, left_out, right_out);
-  Serial.write((char)((left_out&0xFF00)>>8)); // Write high 8 bits as char
-  // create some temporary variables
-  // these tend to work faster than using the main data variables
-  // as they arent fetched and stored all the time
-  //int temp1;  
-  //int temp2;
-  
-  // create a variable frequency and amplitude sinewave
-  // fetch a sample from the lookup table
-  //temp1 = pgm_read_word_near(sinewave + location);
-  //temp1 = (int)random(-512,512);
-  // step through table at rate determined by mod1
-  // use upper byte of mod1 value to set the rate
-  // and have an offset of 1 so there is always an increment.
-  //location += 1 + (mod1_value >> 8);
-  // if weve gone over the table boundary -> loop back
-  // around to the other side.
-  //location &= 0x03ff; // fast way of doing rollover for 2^n numbers
-  // otherwise it would look like this:
-  // if (location >= 1024) {
-  // location -= 1024;
-  // }
-  
-  // set amplitude with mod0
-  // multiply our sinewave by the mod0 value
-  //MultiSU16X16toH16(temp2, temp1, mod0_value);
+  Serial.write((char)left_out>>8); // Write high 8 bits as char
   
   // our sinewave is now in temp2
   left_out = right_in; // put incoming audio on left channel
   right_out = right_in; // put sinusoid out on right channel
 
-  // get ADC values
-  // & is required before adc variables
-  //AudioCodec_ADC(&mod0_value, &mod1_value);
   reti(); // dont forget to return from the interrupt
 }
